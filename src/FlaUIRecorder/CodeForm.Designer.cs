@@ -34,11 +34,13 @@
             // txtCode
             // 
             this.txtCode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCode.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCode.Location = new System.Drawing.Point(0, 0);
             this.txtCode.Multiline = true;
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(643, 533);
             this.txtCode.TabIndex = 0;
+            this.txtCode.WordWrap = false;
             // 
             // CodeForm
             // 

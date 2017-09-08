@@ -55,7 +55,7 @@
             this.openApplicationDialog = new System.Windows.Forms.OpenFileDialog();
             this.openProjectDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveProjectDialog = new System.Windows.Forms.SaveFileDialog();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lstSessions = new System.Windows.Forms.ListBox();
             this.sessionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -177,13 +177,14 @@
             this.mnuSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.mnuSave.Size = new System.Drawing.Size(186, 22);
             this.mnuSave.Text = "Save project";
+            this.mnuSave.Click += new System.EventHandler(this.mnuSave_Click);
             // 
             // mnuSaveAs
             // 
             this.mnuSaveAs.Name = "mnuSaveAs";
             this.mnuSaveAs.Size = new System.Drawing.Size(186, 22);
             this.mnuSaveAs.Text = "Save project as...";
-            this.mnuSaveAs.Click += new System.EventHandler(this.saveProjectAsToolStripMenuItem_Click);
+            this.mnuSaveAs.Click += new System.EventHandler(this.mnuSaveAs_Click);
             // 
             // mnuRecentProjects
             // 
@@ -264,6 +265,7 @@
             this.txtApplicationPath.Name = "txtApplicationPath";
             this.txtApplicationPath.Size = new System.Drawing.Size(317, 20);
             this.txtApplicationPath.TabIndex = 4;
+            this.txtApplicationPath.TextChanged += new System.EventHandler(this.radioButton_CheckedChanged_UpdateDirty);
             // 
             // rdbApplicationProcess
             // 
@@ -306,15 +308,16 @@
             this.saveProjectDialog.Filter = "FlaUI Recorder projects (*.urp)|*.urp";
             this.saveProjectDialog.Title = "Save recorder project";
             // 
-            // listBox1
+            // lstSessions
             // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.DataSource = this.sessionsBindingSource;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(457, 50);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(133, 186);
-            this.listBox1.TabIndex = 6;
+            this.lstSessions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstSessions.DataSource = this.sessionsBindingSource;
+            this.lstSessions.FormattingEnabled = true;
+            this.lstSessions.Location = new System.Drawing.Point(457, 50);
+            this.lstSessions.Name = "lstSessions";
+            this.lstSessions.Size = new System.Drawing.Size(133, 186);
+            this.lstSessions.TabIndex = 6;
+            this.lstSessions.DoubleClick += new System.EventHandler(this.lstSessions_DoubleClick);
             // 
             // sessionsBindingSource
             // 
@@ -337,7 +340,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(602, 249);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.lstSessions);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnStart);
@@ -392,7 +395,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
         private System.Windows.Forms.OpenFileDialog openProjectDialog;
         private System.Windows.Forms.SaveFileDialog saveProjectDialog;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox lstSessions;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.BindingSource recorderProjectBindingSource;
         private System.Windows.Forms.BindingSource sessionsBindingSource;

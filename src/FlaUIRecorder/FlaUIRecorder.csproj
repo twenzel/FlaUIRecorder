@@ -35,6 +35,9 @@
     <ApplicationIcon>UIExplorer.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EventHook, Version=1.4.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EventHook.1.4.39\lib\net45\EventHook.dll</HintPath>
+    </Reference>
     <Reference Include="FlaUI.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FlaUI.Core.1.2.0\lib\net45\FlaUI.Core.dll</HintPath>
     </Reference>
@@ -47,6 +50,15 @@
     <Reference Include="Interop.UIAutomationClient, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FlaUI.UIA3.1.2.0\lib\net45\Interop.UIAutomationClient.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -75,13 +87,13 @@
     <Compile Include="CommentForm.Designer.cs">
       <DependentUpon>CommentForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Internal\ElementHighlighter.cs" />
-    <Compile Include="Internal\FocusTrackingMode.cs" />
-    <Compile Include="Internal\HoverMode.cs" />
+    <Compile Include="Internal\Worker\ClickRecognizeWorker.cs" />
+    <Compile Include="Internal\Worker\HoverWorker.cs" />
     <Compile Include="Internal\MRUManager.cs" />
     <Compile Include="Internal\NativeMethods.cs" />
     <Compile Include="Internal\RecorderState.cs" />
     <Compile Include="Internal\RecordSession.cs" />
+    <Compile Include="Internal\Worker\IRecordWorker.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,5 +155,6 @@
   <ItemGroup>
     <Content Include="UIExplorer.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

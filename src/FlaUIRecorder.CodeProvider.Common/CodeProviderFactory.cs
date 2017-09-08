@@ -10,7 +10,7 @@ namespace FlaUIRecorder.CodeProvider.Common
 {
     public class CodeProviderFactory
     {
-        private List<ICodeProvider> _provider;
+        private Dictionary<string, Type> _providers;
 
         /// <summary>
         /// Gets the names of the available provider
@@ -18,16 +18,16 @@ namespace FlaUIRecorder.CodeProvider.Common
         /// <returns></returns>
         public string[] GetAvailableProviderNames()
         {
-            return GetAvailableProvider().Select(p => p.Name).ToArray();
+            return GetAvailableProvider().Select(p => p.Key).ToArray();
         }
 
         /// <summary>
         /// Gets all available PRovider
         /// </summary>
         /// <returns></returns>
-        public List<ICodeProvider> GetAvailableProvider()
+        public Dictionary<string, Type> GetAvailableProvider()
         {
-            return _provider ?? (_provider = FindProviders(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
+            return _providers ?? (_providers = FindProviders(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
         }
 
         /// <summary>
@@ -35,14 +35,21 @@ namespace FlaUIRecorder.CodeProvider.Common
         /// </summary>
         /// <param name="providerName">The name of the provider to find.</param>
         /// <returns></returns>
-        public ICodeProvider GetProvider(string providerName)
+        public ICodeProvider CreateProvider(string providerName, CodeProviderArguments args)
         {
-            return GetAvailableProvider().Single(p => p.Name == providerName);
+            Type providerType = null;
+
+            if (_providers.TryGetValue(providerName, out providerType))
+            {
+                return (ICodeProvider)Activator.CreateInstance(providerType, args);
+            }
+            else
+                throw new ArgumentException($"Provider '{providerName}' not found.");            
         }
 
-        private List<ICodeProvider> FindProviders(string location)
+        private Dictionary<string, Type> FindProviders(string location)
         {
-            var result = new List<ICodeProvider>();
+            var result = new Dictionary<string, Type>();
             var commonAssemblyFileName = Assembly.GetExecutingAssembly().Location;
 
             foreach (var fileName in Directory.GetFiles(location, "FlaUIRecorder.CodeProvider.*.dll"))
@@ -56,13 +63,19 @@ namespace FlaUIRecorder.CodeProvider.Common
                     var providerTypes = assembly.ExportedTypes.Where(t => typeof(ICodeProvider).IsAssignableFrom(t));
 
                     foreach (var providerType in providerTypes)
-                        result.Add((ICodeProvider)Activator.CreateInstance(providerType));
+                    {
+                        var nameAttribute = providerType.GetCustomAttribute<CodeProviderNameAttribute>();
+                        string name = nameAttribute?.Name ?? "Unknown";
 
-                } catch (FileLoadException )
-                {}
+                        result.Add(name, providerType);
+                    }
+
+                }
+                catch (FileLoadException)
+                { }
             }
 
             return result;
-        }        
+        }
     }
 }

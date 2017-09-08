@@ -6,49 +6,51 @@ using System.Threading.Tasks;
 using FlaUI.Core;
 using FlaUIRecorder.CodeProvider.Common;
 using FlaUI.Core.AutomationElements.Infrastructure;
+using FlaUIRecorder.Internal.Worker;
+using System.Diagnostics;
 
 namespace FlaUIRecorder.Internal
 {
-    public class Recorder
+    public class Recorder : IDisposable
     {
         private readonly AutomationBase _automation;
         private readonly ICodeProvider _codeProvider;
-        private HoverMode _hoverMode;
-        private FocusTrackingMode _focusTrackingMode;
-        private ITreeWalker _treeWalker;
-        private AutomationElement _rootElement;
+        private List<IRecordWorker> _workers = new List<IRecordWorker>();  
+               
 
         /// <summary>
         /// Gets the current state of the recorder
         /// </summary>
         public RecorderState State { get; private set; }
 
-        public Recorder(AutomationType automationType, ICodeProvider codeProvider, int targetProcessId)
+        public Recorder(AutomationType automationType, CodeProviderFactory codeProviderFactory, string codeProviderName, Process targetProcess)
         {
-            _automation = automationType == AutomationType.UIA2 ? (AutomationBase)new FlaUI.UIA2.UIA2Automation() : new FlaUI.UIA3.UIA3Automation();   
-            _rootElement = FindTargetApplicationRoot(targetProcessId);
-
-            _codeProvider = codeProvider;
+            _automation = automationType == AutomationType.UIA2 ? (AutomationBase)new FlaUI.UIA2.UIA2Automation() : new FlaUI.UIA3.UIA3Automation();                          
+            _codeProvider = CreateCodeProvider(codeProviderFactory, codeProviderName, targetProcess);
             State = RecorderState.Paused;
 
-            // Initialize hover
-            _hoverMode = new HoverMode(_automation, targetProcessId);
-            //_hoverMode.ElementHovered += ElementToSelectChanged;
-
-            // Initialize focus tracking
-            _focusTrackingMode = new FocusTrackingMode(_automation, targetProcessId);
-            _focusTrackingMode.ElementFocused += ElementToSelectChanged;
-
-            // Initialize TreeWalker
-            _treeWalker = _automation.TreeWalkerFactory.GetControlViewWalker();
+            // Initialize workers
+            _workers.Add(new HoverWorker(_automation, targetProcess.Id));
+            var click = new ClickRecognizeWorker(_automation, targetProcess.Id);
+            click.ElementClicked += Click_ElementClicked;
+            click.ElementRightClicked += Click_ElementRightClicked;
+            _workers.Add(click);            
         }
 
-        private AutomationElement FindTargetApplicationRoot(int targetProcessId)
+        private ICodeProvider CreateCodeProvider(CodeProviderFactory codeProviderFactory, string codeProviderName, Process targetProcess)
         {
-            var element = _automation.GetDesktop();
-            var root = element.FindFirstChild(c => c.ByProcessId(targetProcessId));
+            var args = new CodeProviderArguments()
+            {
+                Automation = _automation,
+                TargetProcess = targetProcess
+            };
 
-            return root;
+            return codeProviderFactory.CreateProvider(codeProviderName, args);
+        }
+
+        public void Dispose()
+        {
+            _workers.ForEach(w => w.Dispose());
         }
 
         /// <summary>
@@ -57,15 +59,13 @@ namespace FlaUIRecorder.Internal
         public void Record()
         {
             State = RecorderState.Recording;
-            _hoverMode.Start();
-            _focusTrackingMode.Start();
+            _workers.ForEach(w => w.Start());
         }
 
         public void Pause()
         {
             State = RecorderState.Paused;
-            _hoverMode.Stop();
-            _focusTrackingMode.Stop();
+            _workers.ForEach(w => w.Pause());
         }
 
         /// <summary>
@@ -74,40 +74,22 @@ namespace FlaUIRecorder.Internal
         /// <param name="comment"></param>
         public void AddComment(string comment)
         {
-
+            _codeProvider.AddComment(comment);
         }
 
         public string GenerateCode()
         {
-            return "";
+            return _codeProvider.Generate();
         }
 
-        private void ElementToSelectChanged(AutomationElement obj)
+        private void Click_ElementRightClicked(object sender, AutomationElement e)
         {
-            var pathToRoot = GetElementPathToRoot(obj);
+            _codeProvider.RightClick(e);
         }
 
-        private Stack<AutomationElement> GetElementPathToRoot(AutomationElement obj)
-        {
-            var pathToRoot = new Stack<AutomationElement>();
-            while (obj != null)
-            {
-                // Break on circular relationship (should not happen?)
-                if (pathToRoot.Contains(obj) || obj.Equals(_rootElement)) { break; }
-
-                pathToRoot.Push(obj);
-                try
-                {
-                    obj = _treeWalker.GetParent(obj);
-                }
-                catch (Exception ex)
-                {
-                    // TODO: Log
-                    Console.WriteLine($"Exception: {ex.Message}");
-                }
-            }
-
-            return pathToRoot;
-        }
+        private void Click_ElementClicked(object sender, AutomationElement e)
+        {           
+            _codeProvider.Click(e);
+        }        
     }
 }

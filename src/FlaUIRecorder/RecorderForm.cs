@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FlaUI.Core;
 using FlaUIRecorder.CodeProvider.Common;
 using FlaUIRecorder.Internal;
+using System.Diagnostics;
 
 namespace FlaUIRecorder
 {
@@ -25,15 +26,16 @@ namespace FlaUIRecorder
             InitializeComponent();
         }
 
-        public void Initialize(AutomationType automationType, ICodeProvider codeProvider, MainForm mainForm, int targetProcessId)
+        public void Initialize(AutomationType automationType, CodeProviderFactory codeProviderFactory, string codeProviderName, MainForm mainForm, Process targetProcess)
         {
-            _recorder = new Recorder(automationType, codeProvider, targetProcessId);
+            _recorder = new Recorder(automationType, codeProviderFactory, codeProviderName, targetProcess);
             _mainForm = mainForm;
         }
 
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+            _recorder.Dispose();
             _mainForm = null;
         }
 

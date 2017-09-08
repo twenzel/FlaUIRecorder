@@ -25,17 +25,13 @@ namespace FlaUIRecorder
         private RecorderProject _currentProject;
         private AssemblyInformationalVersionAttribute _assemblyInformationalVersionAttribute;
         private MRUManager _mruManager;
+        private Process _targetProcesStartedByRecorder;
 
         public MainForm()
         {
             InitializeComponent();
 
             _assemblyInformationalVersionAttribute = Assembly.GetEntryAssembly().GetCustomAttribute(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
-        }
-
-        private ICodeProvider GetCodeProvider()
-        {
-            return _providerFactory.GetProvider(cboCodeProvider.SelectedItem.ToString());
         }
 
         private AutomationType GetAutomationType()
@@ -55,6 +51,11 @@ namespace FlaUIRecorder
             var recordSession = _currentProject.Sessions.Last();
             recordSession.Code = code;
             _currentProject.IsDirty = true;
+
+            recorderProjectBindingSource.EndEdit();
+
+            if (_targetProcesStartedByRecorder != null)
+                _targetProcesStartedByRecorder.CloseMainWindow();
 
             ShowRecordSession(recordSession);
         }
@@ -106,7 +107,16 @@ namespace FlaUIRecorder
 
         private Process StartAndWaitForTargetApplication(string executable)
         {
-            return Process.Start(executable);
+            var process = Process.Start(executable);
+
+            TimeSpan timeout = TimeSpan.FromMilliseconds(-1.0);
+            FlaUI.Core.Tools.Retry.While(() =>
+           {
+               process.Refresh();
+               return process.MainWindowHandle == IntPtr.Zero;
+           }, timeout, new TimeSpan?(TimeSpan.FromMilliseconds(50.0)));
+
+            return process;
         }
 
         private void LoadProject(string fileName)
@@ -123,7 +133,7 @@ namespace FlaUIRecorder
 
                 _currentProject.FileName = fileName;
                 _currentProject.IsDirty = false;
-                UpdateTitle();                
+                UpdateTitle();
             }
             catch (Exception ex)
             {
@@ -136,7 +146,14 @@ namespace FlaUIRecorder
             if (string.IsNullOrEmpty(_currentProject.FileName))
             {
                 if (saveProjectDialog.ShowDialog(this) == DialogResult.OK)
-                    return SaveProject(saveProjectDialog.FileName);
+                {
+                    var result = SaveProject(saveProjectDialog.FileName);
+
+                    if (result)
+                        _mruManager.AddRecentFile(saveProjectDialog.FileName);
+
+                    return result;
+                }
                 else
                     return false;
             }
@@ -280,6 +297,8 @@ namespace FlaUIRecorder
             RefreshProcessList();
 
             _currentProject = new RecorderProject();
+            recorderProjectBindingSource.DataSource = _currentProject;
+            _currentProject.IsDirty = false;
             UpdateTitle();
             InitializeMru();
         }
@@ -301,16 +320,18 @@ namespace FlaUIRecorder
             if (rdbApplicationStart.Checked)
             {
                 process = StartAndWaitForTargetApplication(_currentProject.Executable);
+                _targetProcesStartedByRecorder = process;
             }
             else
             {
                 process = (Process)cboApplicationProcess.SelectedItem;
+                _targetProcesStartedByRecorder = null;
             }
 
             BringProcessToFront(process);
 
             _recorderForm = new RecorderForm();
-            _recorderForm.Initialize(_currentProject.AutomationType, GetCodeProvider(), this, process.Id);
+            _recorderForm.Initialize(_currentProject.AutomationType, _providerFactory, cboCodeProvider.SelectedItem.ToString(), this, process);
             _recorderForm.Record();
             _recorderForm.ShowInLowerRightCorner();
             this.WindowState = FormWindowState.Minimized;
@@ -367,28 +388,24 @@ namespace FlaUIRecorder
             return true;
         }
 
-        private void saveProjectAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuSaveAs_Click(object sender, EventArgs e)
         {
             if (saveProjectDialog.ShowDialog(this) == DialogResult.OK)
-                SaveProject(saveProjectDialog.FileName);
+            {
+                if (SaveProject(saveProjectDialog.FileName))
+                    _mruManager.AddRecentFile(saveProjectDialog.FileName);
+            }
+        }
+
+        private void mnuSave_Click(object sender, EventArgs e)
+        {
+            SaveProject();
         }
 
         private void recentFileGotClicked_handler(object obj, EventArgs evt)
         {
-            string fileName = (obj as ToolStripItem).Text;
-            if (!File.Exists(fileName))
-            {
-                if (MessageBox.Show($"{fileName} doesn't exist. Remove from recent workspaces?", "File not found", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    _mruManager.RemoveRecentFile(fileName);
-
-                return;
-            }
-
-            if (!EnsureCurrentProjectIsSaved())
-                return;
-
-            LoadProject(fileName);
-        }        
+            LoadProject(obj.ToString());
+        }
 
         private void recorderProjectBindingSource_BindingComplete(object sender, BindingCompleteEventArgs e)
         {
@@ -407,11 +424,19 @@ namespace FlaUIRecorder
         {
             SetDirtyFlag();
         }
-       
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing && !EnsureCurrentProjectIsSaved())
                 e.Cancel = true;
+        }        
+
+        private void lstSessions_DoubleClick(object sender, EventArgs e)
+        {
+            if (lstSessions.SelectedItem != null)
+            {
+                ShowRecordSession((RecordSession)lstSessions.SelectedItem);
+            }
         }
 
         #endregion

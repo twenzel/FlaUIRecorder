@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FlaUI.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FlaUI.Core.1.2.0\lib\net45\FlaUI.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,9 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\CodeProviderNameAttribute.cs" />
+    <Compile Include="AutomationElementExtensions.cs" />
+    <Compile Include="CodeProviderArguments.cs" />
+    <Compile Include="CodeProviderCore.cs" />
     <Compile Include="CodeProviderFactory.cs" />
     <Compile Include="ICodeProvider.cs" />
+    <Compile Include="Internals\Variable.cs" />
+    <Compile Include="Internals\VariableList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
