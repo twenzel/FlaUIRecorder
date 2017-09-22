@@ -31,7 +31,7 @@ namespace FlaUIRecorder.CodeProvider.CSharp
 
         public override void Click(AutomationElement element)
         {
-            System.Diagnostics.Debug.WriteLine("CodeProvider click "+element.ToString());
+            System.Diagnostics.Debug.WriteLine("CodeProvider click " + element.ToString());
 
             var variable = BuildPathToParent(element);
             _builder.AppendLine($"{variable.Name}.Click();");
@@ -91,24 +91,13 @@ namespace FlaUIRecorder.CodeProvider.CSharp
 
         private string CreateVariableName(AutomationElement element)
         {
-            string elementName;
-            string controlTypeName;
+            string elementName = CSharpCodeHelper.GetVariableName(element);
             string itemIdentifyer;
 
-            if (element.Properties.Name.TryGetValue(out elementName) && !string.IsNullOrEmpty(elementName))
-                elementName = Char.ToLower(elementName[0]) + elementName.Substring(1); // to camel case
-            else
-                elementName = "unkown";
-
-            if (element.Properties.ControlType.TryGetValue(out var controlType))
-                controlTypeName = controlType.ToString();
-            else
-                controlTypeName = "Item";
-
             if (!element.Properties.AutomationId.TryGetValue(out itemIdentifyer) || string.IsNullOrEmpty(itemIdentifyer))
-                itemIdentifyer = "_" + GetVariableIdentifier(elementName + controlTypeName);
+                itemIdentifyer = "_" + GetVariableIdentifier(elementName);
 
-            return elementName + controlTypeName + itemIdentifyer;
+            return elementName + itemIdentifyer;
         }
 
         private string GetVariableIdentifier(string variableName)
