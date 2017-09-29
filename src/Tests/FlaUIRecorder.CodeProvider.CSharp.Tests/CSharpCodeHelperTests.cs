@@ -25,5 +25,15 @@ namespace FlaUIRecorder.CodeProvider.CSharp.Tests
             name.Should().Be("_searchMenuItem");
         }
 
+
+        [Test]
+        public void AnyTest()
+        {
+            var element = new ElementBuilder().CreateTextBox().WithName("search").Build().AsTextBox();
+            element.Text = "no";
+
+            var t = element.Text;
+
+        }
     }
 }

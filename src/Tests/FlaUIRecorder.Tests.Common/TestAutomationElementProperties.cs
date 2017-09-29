@@ -34,7 +34,7 @@ namespace FlaUIRecorder.Tests.Common
         public PropertyId IsEnabled => PropertyId.NotSupportedByFramework; //AutomationObjectIds.IsEnabledProperty;
         public PropertyId IsKeyboardFocusable => PropertyId.NotSupportedByFramework; //AutomationObjectIds.IsKeyboardFocusableProperty;
         public PropertyId IsOffscreen => PropertyId.NotSupportedByFramework; //AutomationObjectIds.IsOffscreenProperty;
-        public PropertyId IsPassword => PropertyId.NotSupportedByFramework; //AutomationObjectIds.IsPasswordProperty;
+        public PropertyId IsPassword => AutomationObjectIds.IsPasswordProperty;
         public PropertyId IsPeripheral => PropertyId.NotSupportedByFramework;
         public PropertyId IsRequiredForForm => PropertyId.NotSupportedByFramework; //AutomationObjectIds.IsRequiredForFormProperty;
         public PropertyId ItemStatus => PropertyId.NotSupportedByFramework; //AutomationObjectIds.ItemStatusProperty;

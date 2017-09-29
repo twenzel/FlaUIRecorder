@@ -58,7 +58,6 @@
     <Compile Include="Patterns\TextPattern.cs" />
     <Compile Include="Patterns\ValuePattern.cs" />
     <Compile Include="TestAutomation.cs" />
-    <Compile Include="TestAutomationElement.cs" />
     <Compile Include="TestAutomationElementPatternAvailabilityProperties.cs" />
     <Compile Include="TestAutomationElementPatternValues.cs" />
     <Compile Include="TestAutomationElementProperties.cs" />

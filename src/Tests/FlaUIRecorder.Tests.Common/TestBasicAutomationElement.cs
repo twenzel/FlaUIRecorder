@@ -14,40 +14,52 @@ using UIA = System.Windows.Automation;
 using FlaUIRecorder.Tests.Common.Converters;
 using FlaUI.UIA2.Extensions;
 using FlaUIRecorder.Tests.Common.EventHandlers;
+using FlaUI.UIA2.Identifiers;
+using FlaUIRecorder.Tests.Common.Patterns;
 
 namespace FlaUIRecorder.Tests.Common
 {
     public class TestBasicAutomationElement : BasicAutomationElementBase
     {
-        //public TestBasicAutomationElement(AutomationBase automation) : base(automation)
-        //{
-        //}
+        private Dictionary<Int32, object> _propertyValues = new Dictionary<Int32, object>();
 
-        public TestBasicAutomationElement(TestAutomation automation, UIA.AutomationElement nativeElement) : this(automation, new TestAutomationElement(nativeElement))
+        public TestBasicAutomationElement(TestAutomation automation, UIA.AutomationElement nativeElement) : this(automation)
         {
         }
 
+        public TestBasicAutomationElement() : this(new TestAutomation())
+        {
+        }
 
-        public TestBasicAutomationElement(TestAutomation automation, TestAutomationElement nativeElement) : base(automation)
+        public TestBasicAutomationElement(TestAutomation automation) : base(automation)
         {
             Automation = automation;
-            NativeElement = nativeElement;
             Patterns = new TestAutomationElementPatternValues(this);
+            Name = "";
+            ControlType = FlaUI.Core.Definitions.ControlType.Custom;
         }
+
 
         /// <summary>
         /// Concrete implementation of the automation object
         /// </summary>
         public new TestAutomation Automation { get; }
 
-        /// <summary>
-        /// Native object for the ui element
-        /// </summary>
-        public TestAutomationElement NativeElement { get; }
-
         public override AutomationElementPatternValuesBase Patterns
         {
             get;
+        }
+
+        public string Name
+        {
+            get { return _propertyValues[AutomationObjectIds.NameProperty.Id] as string; }
+            set { _propertyValues[AutomationObjectIds.NameProperty.Id] = value; }
+        }
+
+        public FlaUI.Core.Definitions.ControlType ControlType
+        {
+            get { return (FlaUI.Core.Definitions.ControlType)FlaUI.UIA2.Converters.ControlTypeConverter.ToControlType(_propertyValues[AutomationObjectIds.ControlTypeProperty.Id]); }
+            set { _propertyValues[AutomationObjectIds.ControlTypeProperty.Id] = FlaUI.UIA2.Converters.ControlTypeConverter.ToControlTypeNative(value); }
         }
 
         public override void SetFocus()
@@ -63,7 +75,21 @@ namespace FlaUIRecorder.Tests.Common
             //    NativeElement.GetCachedPropertyValue(property, ignoreDefaultValue) :
             //    NativeElement.GetCurrentPropertyValue(property, ignoreDefaultValue);
             //return returnValue;
-            return NativeElement.GetPropertyValue(property, ignoreDefaultValue);
+
+            if (_propertyValues.TryGetValue(property.Id, out var value))
+                return value;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Sets a property value.
+        /// </summary>
+        /// <param name="propertyId">The Id of the property. e.g. "AutomationObjectIds.NameProperty.Id"</param>        
+        /// <param name="value">The value of the property</param>
+        public void SetPropertyValue(int propertyId, object value)
+        {
+            _propertyValues[propertyId] = value;
         }
 
         protected override object InternalGetPattern(int patternId, bool cached)
@@ -71,9 +97,15 @@ namespace FlaUIRecorder.Tests.Common
             var pattern = UIA.AutomationPattern.LookupById(patternId);
             //var returnedValue = cached
             //    ? NativeElement.GetCachedPattern(pattern)
-            //    : NativeElement.GetCurrentPattern(pattern);
-            return NativeElement.GetPattern(pattern);
+            //    : NativeElement.GetCurrentPattern(pattern);            
             //return returnedValue;
+
+            if (pattern.Id == UIA.ValuePattern.Pattern.Id)
+                return NativeValuePattern.Instance;
+            else if (pattern.Id == UIA.TextPattern.Pattern.Id)
+                return NativeTextPattern.Instance;
+
+            return null;
         }
 
         /// <inheritdoc />
@@ -208,7 +240,7 @@ namespace FlaUIRecorder.Tests.Common
 
         public override int GetHashCode()
         {
-            return NativeElement.GetHashCode();
+            return _propertyValues.GetHashCode();
         }
     }
 }

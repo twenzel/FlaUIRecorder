@@ -12,20 +12,20 @@ using UIA = System.Windows.Automation;
 
 namespace FlaUIRecorder.Tests.Common.Patterns
 {
-    public class ValuePattern : ValuePatternBase<UIA.ValuePattern>
+    public class ValuePattern : ValuePatternBase<NativeValuePattern>
     {
         public static readonly PatternId Pattern = PatternId.Register(AutomationType.UIA2, UIA.ValuePattern.Pattern.Id, "Value", AutomationObjectIds.IsValuePatternAvailableProperty);
         public static readonly PropertyId IsReadOnlyProperty = PropertyId.Register(AutomationType.UIA2, UIA.ValuePattern.IsReadOnlyProperty.Id, "IsReadOnly");
         public static readonly PropertyId ValueProperty = PropertyId.Register(AutomationType.UIA2, UIA.ValuePattern.ValueProperty.Id, "Value");
 
-        public ValuePattern(BasicAutomationElementBase basicAutomationElement, UIA.ValuePattern nativePattern) : base(basicAutomationElement, nativePattern)
+        public ValuePattern(TestBasicAutomationElement basicAutomationElement, NativeValuePattern nativePattern) : base(basicAutomationElement, nativePattern)
         {
         }
 
         /// <inheritdoc />
         public override void SetValue(string value)
         {
-            NativePattern.SetValue(value);
+            ((TestBasicAutomationElement)BasicAutomationElement).SetPropertyValue(13, value);
         }
     }
 
@@ -34,5 +34,10 @@ namespace FlaUIRecorder.Tests.Common.Patterns
         public PropertyId IsReadOnly => ValuePattern.IsReadOnlyProperty;
 
         public PropertyId Value => ValuePattern.ValueProperty;
+    }
+
+    public class NativeValuePattern
+    {
+        public static NativeValuePattern Instance { get; private set; } = new NativeValuePattern();
     }
 }

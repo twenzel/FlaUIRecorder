@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using UIA = System.Windows.Automation;
 
 namespace FlaUIRecorder.Tests.Common
-{    
+{
     public class TestAutomationElementPatternValues : AutomationElementPatternValuesBase
     {
         public TestAutomationElementPatternValues(TestBasicAutomationElement basicAutomationElement) : base(basicAutomationElement)
@@ -188,7 +188,7 @@ namespace FlaUIRecorder.Tests.Common
 
         protected override IAutomationPattern<ITextPattern> InitializeTextPattern()
         {
-            return new AutomationPattern<ITextPattern, UIA.TextPattern>(
+            return new AutomationPattern<ITextPattern, NativeTextPattern>(
                 TextPattern.Pattern, BasicAutomationElement, (b, p) => new TextPattern(b, p));
         }
 
@@ -213,8 +213,8 @@ namespace FlaUIRecorder.Tests.Common
 
         protected override IAutomationPattern<IValuePattern> InitializeValuePattern()
         {
-            return new AutomationPattern<IValuePattern, UIA.ValuePattern>(
-                ValuePattern.Pattern, BasicAutomationElement, (b, p) => new ValuePattern(b, p));
+            return new AutomationPattern<IValuePattern, NativeValuePattern>(
+                ValuePattern.Pattern, BasicAutomationElement, (b, p) => new ValuePattern((TestBasicAutomationElement)b, p));
         }
 
         protected override IAutomationPattern<IVirtualizedItemPattern> InitializeVirtualizedItemPattern()

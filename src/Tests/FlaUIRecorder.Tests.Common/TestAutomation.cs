@@ -65,7 +65,7 @@ namespace FlaUIRecorder.Tests.Common
 
         public AutomationElement WrapNativeElement(UIA.AutomationElement nativeElement)
         {
-            return nativeElement == null ? null : new AutomationElement(new TestBasicAutomationElement(this, new TestAutomationElement(nativeElement)));
+            return nativeElement == null ? null : new AutomationElement(new TestBasicAutomationElement(this, nativeElement));
         }
     }
 }

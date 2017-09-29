@@ -1,5 +1,6 @@
 ﻿using FlaUI.Core.AutomationElements;
 using FlaUI.Core.AutomationElements.Infrastructure;
+using FlaUI.UIA2.Identifiers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace FlaUIRecorder.Tests.Common
     public class ElementBuilder
     {
         private AutomationElement _element;
-        private TestAutomationElement _innerElement;
+        private TestBasicAutomationElement _innerElement;
 
         /// <summary>
         /// Creates a TextBox element
@@ -22,8 +23,10 @@ namespace FlaUIRecorder.Tests.Common
         /// <returns></returns>
         public ElementBuilder CreateTextBox()
         {
-            _innerElement = new TestAutomationElement() { ControlType = FlaUI.Core.Definitions.ControlType.Text };
-            _element = new TextBox(new TestBasicAutomationElement(new TestAutomation(), _innerElement));
+            _innerElement = new TestBasicAutomationElement { ControlType = FlaUI.Core.Definitions.ControlType.Text };
+            _innerElement.SetPropertyValue(AutomationObjectIds.IsPasswordProperty.Id, false);
+
+            _element = new TextBox(_innerElement);
 
             return this;
         }
@@ -34,8 +37,8 @@ namespace FlaUIRecorder.Tests.Common
         /// <returns></returns>
         public ElementBuilder CreateButton()
         {
-            _innerElement = new TestAutomationElement() { ControlType = FlaUI.Core.Definitions.ControlType.Button };
-            _element = new Button(new TestBasicAutomationElement(new TestAutomation(), _innerElement));
+            _innerElement = new TestBasicAutomationElement { ControlType = FlaUI.Core.Definitions.ControlType.Button };
+            _element = new Button(_innerElement);
 
             return this;
         }
@@ -46,8 +49,8 @@ namespace FlaUIRecorder.Tests.Common
         /// <returns></returns>
         public ElementBuilder CreateMenuItem()
         {
-            _innerElement = new TestAutomationElement() { ControlType = FlaUI.Core.Definitions.ControlType.MenuItem };
-            _element = new MenuItem(new TestBasicAutomationElement(new TestAutomation(), _innerElement));
+            _innerElement = new TestBasicAutomationElement() { ControlType = FlaUI.Core.Definitions.ControlType.MenuItem };
+            _element = new MenuItem(_innerElement);
 
             return this;
         }
@@ -58,8 +61,8 @@ namespace FlaUIRecorder.Tests.Common
         /// <returns></returns>
         public ElementBuilder CreatePane()
         {
-            _innerElement = new TestAutomationElement() { ControlType = FlaUI.Core.Definitions.ControlType.Pane };
-            _element = new MenuItem(new TestBasicAutomationElement(new TestAutomation(), _innerElement));
+            _innerElement = new TestBasicAutomationElement() { ControlType = FlaUI.Core.Definitions.ControlType.Pane };
+            _element = new MenuItem(_innerElement);
 
             return this;
         }
