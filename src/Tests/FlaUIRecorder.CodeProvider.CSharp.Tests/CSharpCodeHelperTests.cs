@@ -18,16 +18,12 @@ namespace FlaUIRecorder.CodeProvider.CSharp.Tests
         [Test]
         public void Generates_Valid_VariableNames()
         {
-            var name = CSharpCodeHelper.GetVariableName(CreateElement("search", ControlType.MenuItem));
+            var name = CSharpCodeHelper.GetVariableName(new ElementBuilder().CreateMenuItem().WithName("search").Build());
             name.Should().Be("searchMenuItem");
 
-            name = CSharpCodeHelper.GetVariableName(CreateElement("? .-(_search+*'´`;:<>|@#!\"§$%&/()={[]}\\", ControlType.MenuItem));
+            name = CSharpCodeHelper.GetVariableName(new ElementBuilder().CreateMenuItem().WithName("? .-(_search+*'´`;:<>|@#!\"§$%&/()={[]}\\").Build());
             name.Should().Be("_searchMenuItem");
         }
 
-        private AutomationElement CreateElement(string name, ControlType controlType)
-        {
-            return new TextBox(new TestBasicAutomationElement(new TestAutomation(), new TestAutomationElement { Name = name, ControlType = controlType}));
-        }
     }
 }

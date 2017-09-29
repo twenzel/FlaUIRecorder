@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Converters\AutomationElementConverter.cs" />
     <Compile Include="Converters\TextRangeConverter.cs" />
+    <Compile Include="ElementBuilder.cs" />
     <Compile Include="EventHandlers\TestBasicEventHandler.cs" />
     <Compile Include="EventHandlers\TestPropertyChangedEventHandler.cs" />
     <Compile Include="EventHandlers\TestStructureChangedEventHandler.cs" />

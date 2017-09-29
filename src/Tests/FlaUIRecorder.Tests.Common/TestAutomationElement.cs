@@ -38,6 +38,16 @@ namespace FlaUIRecorder.Tests.Common
             set { propertyValues[AutomationObjectIds.ControlTypeProperty.Id] = FlaUI.UIA2.Converters.ControlTypeConverter.ToControlTypeNative(value); }
         }
 
+        /// <summary>
+        /// Sets a property value.
+        /// </summary>
+        /// <param name="propertyId">The Id of the property. e.g. "AutomationObjectIds.NameProperty.Id"</param>        
+        /// <param name="value">The value of the property</param>
+        public void SetPropertyValue(int propertyId, object value)
+        {
+            propertyValues[propertyId] = value;
+        }
+
         public object GetPropertyValue(AutomationProperty property, bool ignoreDefaultValue)
         {
             if (propertyValues.TryGetValue(property.Id, out var value))
