@@ -87,6 +87,13 @@
     <Compile Include="CommentForm.Designer.cs">
       <DependentUpon>CommentForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExceptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExceptionForm.Designer.cs">
+      <DependentUpon>ExceptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Internal\Worker\ClickRecognizeWorker.cs" />
     <Compile Include="Internal\Worker\HoverWorker.cs" />
     <Compile Include="Internal\MRUManager.cs" />
@@ -115,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CommentForm.resx">
       <DependentUpon>CommentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionForm.resx">
+      <DependentUpon>ExceptionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
