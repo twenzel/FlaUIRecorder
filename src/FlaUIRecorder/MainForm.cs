@@ -13,6 +13,7 @@ using System.Management;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -105,9 +106,16 @@ namespace FlaUIRecorder
             return result;
         }
 
-        private Process StartAndWaitForTargetApplication(string executable)
+        private Process StartAndWaitForTargetApplication(string executable, string args = null)
         {
-            var process = Process.Start(executable);
+            Process process;
+
+            if (!string.IsNullOrEmpty(args))
+                process = Process.Start(executable, args);
+            else
+                process = Process.Start(executable);
+
+            Thread.Sleep(new TimeSpan(0, 0, 0, 1, 0)); // Wait at least one second to allow proper application start
 
             TimeSpan timeout = TimeSpan.FromMilliseconds(-1.0);
             FlaUI.Core.Tools.Retry.While(() =>
@@ -319,7 +327,7 @@ namespace FlaUIRecorder
 
             if (rdbApplicationStart.Checked)
             {
-                process = StartAndWaitForTargetApplication(_currentProject.Executable);
+                process = StartAndWaitForTargetApplication(_currentProject.Executable, _currentProject.Arguments);
                 _targetProcesStartedByRecorder = process;
             }
             else
