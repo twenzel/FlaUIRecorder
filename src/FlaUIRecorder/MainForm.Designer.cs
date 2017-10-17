@@ -46,6 +46,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.txtApplicationArgs = new System.Windows.Forms.TextBox();
+            this.lblApplicationArgs = new System.Windows.Forms.Label();
             this.cboApplicationProcess = new System.Windows.Forms.ComboBox();
             this.btnApplicationBrowse = new System.Windows.Forms.Button();
             this.btnProcessRefresh = new System.Windows.Forms.Button();
@@ -102,7 +104,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 213);
+            this.btnStart.Location = new System.Drawing.Point(12, 236);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(85, 23);
             this.btnStart.TabIndex = 2;
@@ -208,6 +210,8 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.txtApplicationArgs);
+            this.groupBox3.Controls.Add(this.lblApplicationArgs);
             this.groupBox3.Controls.Add(this.cboApplicationProcess);
             this.groupBox3.Controls.Add(this.btnApplicationBrowse);
             this.groupBox3.Controls.Add(this.btnProcessRefresh);
@@ -216,10 +220,27 @@
             this.groupBox3.Controls.Add(this.rdbApplicationStart);
             this.groupBox3.Location = new System.Drawing.Point(12, 107);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(439, 75);
+            this.groupBox3.Size = new System.Drawing.Size(439, 113);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Target application";
+            // 
+            // txtApplicationArgs
+            // 
+            this.txtApplicationArgs.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.recorderProjectBindingSource, "Arguments", true));
+            this.txtApplicationArgs.Location = new System.Drawing.Point(83, 45);
+            this.txtApplicationArgs.Name = "txtApplicationArgs";
+            this.txtApplicationArgs.Size = new System.Drawing.Size(317, 20);
+            this.txtApplicationArgs.TabIndex = 5;
+            // 
+            // lblApplicationArgs
+            // 
+            this.lblApplicationArgs.AutoSize = true;
+            this.lblApplicationArgs.Location = new System.Drawing.Point(25, 49);
+            this.lblApplicationArgs.Name = "lblApplicationArgs";
+            this.lblApplicationArgs.Size = new System.Drawing.Size(31, 13);
+            this.lblApplicationArgs.TabIndex = 8;
+            this.lblApplicationArgs.Text = "Args:";
             // 
             // cboApplicationProcess
             // 
@@ -227,10 +248,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cboApplicationProcess.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboApplicationProcess.FormattingEnabled = true;
-            this.cboApplicationProcess.Location = new System.Drawing.Point(83, 45);
+            this.cboApplicationProcess.Location = new System.Drawing.Point(83, 73);
             this.cboApplicationProcess.Name = "cboApplicationProcess";
             this.cboApplicationProcess.Size = new System.Drawing.Size(317, 21);
-            this.cboApplicationProcess.TabIndex = 5;
+            this.cboApplicationProcess.TabIndex = 6;
             this.cboApplicationProcess.SelectedIndexChanged += new System.EventHandler(this.radioButton_CheckedChanged_UpdateDirty);
             this.cboApplicationProcess.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cboApplicationProcess_Format);
             // 
@@ -249,10 +270,10 @@
             // 
             this.btnProcessRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnProcessRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnProcessRefresh.Image")));
-            this.btnProcessRefresh.Location = new System.Drawing.Point(406, 43);
+            this.btnProcessRefresh.Location = new System.Drawing.Point(406, 71);
             this.btnProcessRefresh.Name = "btnProcessRefresh";
             this.btnProcessRefresh.Size = new System.Drawing.Size(27, 24);
-            this.btnProcessRefresh.TabIndex = 6;
+            this.btnProcessRefresh.TabIndex = 7;
             this.btnProcessRefresh.UseVisualStyleBackColor = true;
             this.btnProcessRefresh.Click += new System.EventHandler(this.btnProcessRefresh_Click);
             // 
@@ -270,7 +291,7 @@
             // rdbApplicationProcess
             // 
             this.rdbApplicationProcess.AutoSize = true;
-            this.rdbApplicationProcess.Location = new System.Drawing.Point(6, 46);
+            this.rdbApplicationProcess.Location = new System.Drawing.Point(6, 74);
             this.rdbApplicationProcess.Name = "rdbApplicationProcess";
             this.rdbApplicationProcess.Size = new System.Drawing.Size(66, 17);
             this.rdbApplicationProcess.TabIndex = 3;
@@ -315,7 +336,7 @@
             this.lstSessions.FormattingEnabled = true;
             this.lstSessions.Location = new System.Drawing.Point(457, 50);
             this.lstSessions.Name = "lstSessions";
-            this.lstSessions.Size = new System.Drawing.Size(133, 186);
+            this.lstSessions.Size = new System.Drawing.Size(133, 212);
             this.lstSessions.TabIndex = 6;
             this.lstSessions.DoubleClick += new System.EventHandler(this.lstSessions_DoubleClick);
             // 
@@ -338,7 +359,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(602, 249);
+            this.ClientSize = new System.Drawing.Size(602, 271);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstSessions);
             this.Controls.Add(this.groupBox3);
@@ -400,6 +421,8 @@
         private System.Windows.Forms.BindingSource recorderProjectBindingSource;
         private System.Windows.Forms.BindingSource sessionsBindingSource;
         private System.Windows.Forms.ToolStripMenuItem mnuRecentProjects;
+        private System.Windows.Forms.Label lblApplicationArgs;
+        private System.Windows.Forms.TextBox txtApplicationArgs;
     }
 }
 
