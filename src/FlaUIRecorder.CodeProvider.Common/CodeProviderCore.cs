@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using FlaUI.Core.AutomationElements.Infrastructure;
 using FlaUI.Core;
 using System.Diagnostics;
@@ -25,8 +23,6 @@ namespace FlaUIRecorder.CodeProvider.Common
             TargetProcess = args.TargetProcess;
 
             RootElement = FindTargetApplicationRoot(args.TargetProcess.Id);
-            var t = GetMainWindow();
-            var r = RootElement = FindTargetApplicationRoot(args.TargetProcess.Id);
 
             // Initialize TreeWalker
             TreeWalker = Automation.TreeWalkerFactory.GetControlViewWalker();
