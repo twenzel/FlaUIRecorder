@@ -18,7 +18,7 @@ namespace FlaUIRecorder.CodeProvider.Common.Internals
         {
             get
             {
-                var result = this.FirstOrDefault(v => v.Name == name);
+                var result = this.FirstOrDefault(v => 0 == string.Compare(v.Name, name, StringComparison.OrdinalIgnoreCase));
 
                 if (result == null)
                     throw new ArgumentException($"No variable of name '{name}' found!");
@@ -56,7 +56,7 @@ namespace FlaUIRecorder.CodeProvider.Common.Internals
                     return result;
             }
 
-            return this.FirstOrDefault(v => v.Element == element);
+            return this.FirstOrDefault(v => Equals(v.Element, element));
         }
     }
 }
