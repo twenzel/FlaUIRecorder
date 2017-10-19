@@ -22,6 +22,11 @@ namespace FlaUIRecorder
         public string Executable { get; set; }
 
         /// <summary>
+        /// The arguments of the target application
+        /// </summary>
+        public string Arguments { get; set; }
+
+        /// <summary>
         /// The name of the process used
         /// </summary>
         public string ProcessName { get; set; }

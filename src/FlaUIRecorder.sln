@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlaUIRecorder", "FlaUIRecorder\FlaUIRecorder.csproj", "{CBFE71E8-DA52-4461-BEB9-82E338004B4A}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlaUIRecorder.CodeProvider.CSharp.Tests", "Tests\FlaUIRecorder.CodeProvider.CSharp.Tests\FlaUIRecorder.CodeProvider.CSharp.Tests.csproj", "{28828ACF-031B-4EAA-8AB7-8991F08131E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlaUIRecorder.Tests.Common", "Tests\FlaUIRecorder.Tests.Common\FlaUIRecorder.Tests.Common.csproj", "{DEC9B19B-741E-47DF-919C-2D3207456707}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlaUIRecorder.CodeProvider.PowerShell", "FlaUIRecorder.CodeProvider.PowerShell\FlaUIRecorder.CodeProvider.PowerShell.csproj", "{CDA99BEC-4755-4380-A03F-5C20465AC86D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlaUIRecorder.CodeProvider.PowerShell.Tests", "Tests\FlaUIRecorder.CodeProvider.PowerShell.Tests\FlaUIRecorder.CodeProvider.PowerShell.Tests.csproj", "{7DDDB734-A2E8-4366-8777-E2498E440EA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,14 @@ Global
 		{DEC9B19B-741E-47DF-919C-2D3207456707}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEC9B19B-741E-47DF-919C-2D3207456707}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEC9B19B-741E-47DF-919C-2D3207456707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDA99BEC-4755-4380-A03F-5C20465AC86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA99BEC-4755-4380-A03F-5C20465AC86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA99BEC-4755-4380-A03F-5C20465AC86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA99BEC-4755-4380-A03F-5C20465AC86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DDDB734-A2E8-4366-8777-E2498E440EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DDDB734-A2E8-4366-8777-E2498E440EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DDDB734-A2E8-4366-8777-E2498E440EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DDDB734-A2E8-4366-8777-E2498E440EA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{28828ACF-031B-4EAA-8AB7-8991F08131E5} = {9E587CA7-100C-4169-8EFF-21F120DFCE1B}
 		{DEC9B19B-741E-47DF-919C-2D3207456707} = {9E587CA7-100C-4169-8EFF-21F120DFCE1B}
+		{7DDDB734-A2E8-4366-8777-E2498E440EA6} = {9E587CA7-100C-4169-8EFF-21F120DFCE1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DF7DB97-D79F-4354-A78C-6A01DFEFC5FD}
