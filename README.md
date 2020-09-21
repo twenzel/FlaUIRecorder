@@ -1,3 +1,5 @@
+[![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Abandoned-orange.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+
 # FlaUIRecorder
 UIAutomation test recorder for using with [FlaUI library](https://github.com/Roemer/FlaUI).
 ![Alt text](https://github.com/Roemer/FlaUI/blob/master/FlaUI.png?raw=true "FlaUI")
